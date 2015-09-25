@@ -5,8 +5,9 @@ L’esercizio prevede la realizzazione di una semplice applicazione Android che 
 L’app deve permettere all’utente di digitare owner e nome del repository e deve quindi mostrare la lista (comprensiva di avatar e username) degli utenti che lo hanno inserito tra i preferiti.
 
 Aspetti sui quale porre particolare attenzione:
-* Struttura, leggibilità e pulizia del codice
-* Testing automatico 
+
+- Struttura, leggibilità e pulizia del codice
+- Testing automatico 
 
 Per lo sviluppo dell’applicazione è permesso l’utilizzo di librerie opensource, fatto salvo di essere in grado di implementare le corrispondenti funzionalità utilizzando solo le API offerte dall'Android SDK.
 
