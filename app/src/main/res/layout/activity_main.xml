@@ -29,6 +29,8 @@
         android:layout_alignEnd="@+id/user_name_editText"
         android:layout_alignStart="@+id/user_name_editText"
         android:layout_below="@+id/user_name_editText"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
         style="@style/edit_text"
         />
 

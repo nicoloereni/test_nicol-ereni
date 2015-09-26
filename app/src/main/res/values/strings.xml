@@ -9,5 +9,6 @@
     <string name="username">Username</string>
     <string name="repository_name">Repository Name</string>
     <string name="find">Cerca</string>
-    <string name="stargazers_error_message">Nessun stargazer trvato</string>
+    <string name="stargazers_error_message">Nessun stargazer trovato</string>
+    <string name="loading_title">Caricamento...</string>
 </resources>

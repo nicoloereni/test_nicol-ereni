@@ -1,18 +1,25 @@
 package com.nicoloereni.githubstargazers;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.nicoloereni.githubstargazers.api.HttpRequest;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StargazersActivity extends AppCompatActivity
 {
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -22,22 +29,15 @@ public class StargazersActivity extends AppCompatActivity
 
         setActionBarTitle();
 
-        final StargazersFactory stargazersFactory =
-                new StargazersFactory(
-                        new HttpRequest(
-                                GitHubRequest.getRequest(getStargazerNameFromIntent(), getStargazerRepoNameFromIntent())
-                        )
-                );
-
         AsyncTask asyncTask = new AsyncTask()
         {
             @Override
             protected ArrayList doInBackground(Object[] params) {
                 try
                 {
-                    //TODO parte lo spinner
-                    return stargazersFactory.all();
-                } catch (Exception e)
+                    showProgressDialog();
+                    return getStargazersFactory().all();
+                } catch (JSONException e)
                 {
                     showOnScreenError();
                     return new ArrayList();
@@ -55,13 +55,48 @@ public class StargazersActivity extends AppCompatActivity
                                 R.layout.stargazers_list_item,
                                 (List<StargazerModel>) o));
 
-                //TODO spengo spinner
-
+                dismissProgressDialog();
             }
         };
 
         asyncTask.execute();
 
+    }
+
+    private void showProgressDialog() {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                getProgressDialog().show();
+            }
+        });
+    }
+
+    private void dismissProgressDialog() {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                getProgressDialog().dismiss();
+            }
+        });
+    }
+
+    @NonNull
+    private ProgressDialog getProgressDialog() {
+
+        if(progressDialog == null){
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle(getString(R.string.loading_title));
+        }
+
+        return progressDialog;
+    }
+
+    @NonNull
+    private StargazersFactory getStargazersFactory() {
+        return new StargazersFactory(
+                new HttpRequest(
+                        GitHubRequest.getRequest(getStargazerNameFromIntent(), getStargazerRepoNameFromIntent())
+                )
+        );
     }
 
     private ListView getStargazersListView() {
@@ -83,11 +118,11 @@ public class StargazersActivity extends AppCompatActivity
                 Toast.makeText(StargazersActivity.this, R.string.stargazers_error_message, Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void setActionBarTitle()
     {
         getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
     }
+
 }
