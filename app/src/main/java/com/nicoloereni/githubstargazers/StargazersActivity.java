@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.nicoloereni.githubstargazers.api.HttpRequest;
@@ -16,7 +15,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StargazersActivity extends AppCompatActivity
+public class StargazersActivity extends GitHubStargazersActivity
 {
 
     private ProgressDialog progressDialog;
@@ -26,7 +25,6 @@ public class StargazersActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stargazers);
-
         setActionBarTitle();
 
         AsyncTask asyncTask = new AsyncTask()
@@ -39,7 +37,7 @@ public class StargazersActivity extends AppCompatActivity
                     return getStargazersFactory().all();
                 } catch (JSONException e)
                 {
-                    showOnScreenError();
+                    StargazersActivity.this.showOnScreenError(R.string.stargazers_not_found_error_message);
                     return new ArrayList();
                 }
             }
@@ -109,15 +107,6 @@ public class StargazersActivity extends AppCompatActivity
 
     private String getStargazerNameFromIntent() {
         return getIntent().getStringExtra(GitHubRequest.USERNAME);
-    }
-
-    private void showOnScreenError()
-    {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                Toast.makeText(StargazersActivity.this, R.string.stargazers_error_message, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void setActionBarTitle()

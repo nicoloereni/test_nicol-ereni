@@ -9,6 +9,8 @@
     <string name="username">Username</string>
     <string name="repository_name">Repository Name</string>
     <string name="find">Cerca</string>
-    <string name="stargazers_error_message">Nessun stargazer trovato</string>
+    <string name="stargazers_not_found_error_message">Nessun stargazer trovato</string>
     <string name="loading_title">Caricamento...</string>
+    <string name="title_activity_git_hub_stargazers">GitHubStargazersActivity</string>
+    <string name="no_connection_message">Nessuna connesione prova più tardi</string>
 </resources>

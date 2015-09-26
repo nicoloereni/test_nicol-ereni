@@ -1,6 +1,8 @@
 package com.nicoloereni.githubstargazers;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -9,8 +11,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends GitHubStargazersActivity
 {
 
     @Override
@@ -19,12 +22,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button findStargazersButton = (Button) findViewById(R.id.find_stargazers_button);
-        findStargazersButton.setOnClickListener(new View.OnClickListener() {
+        getFindStargazersButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToStargazersActivity();
-
             }
         });
 
@@ -45,12 +46,24 @@ public class MainActivity extends AppCompatActivity
         );
     }
 
-    private void goToStargazersActivity() {
-        Intent intent = new Intent(MainActivity.this, StargazersActivity.class);
-        intent.putExtra(GitHubRequest.USERNAME, getUsernameEditText().getText() + "");
-        intent.putExtra(GitHubRequest.REPOSITORY_NAME, getRepositoryNameEditText().getText() + "");
+    private Button getFindStargazersButton() {
+        return (Button) findViewById(R.id.find_stargazers_button);
+    }
 
-        startActivity(intent);
+    private void goToStargazersActivity() {
+
+        if(isNetworkConnected())
+        {
+            Intent intent = new Intent(MainActivity.this, StargazersActivity.class);
+            intent.putExtra(GitHubRequest.USERNAME, getUsernameEditText().getText() + "");
+            intent.putExtra(GitHubRequest.REPOSITORY_NAME, getRepositoryNameEditText().getText() + "");
+
+            startActivity(intent);
+        }
+        else
+        {
+            showOnScreenError(R.string.no_connection_message);
+        }
     }
 
     private EditText getRepositoryNameEditText() {
@@ -63,5 +76,10 @@ public class MainActivity extends AppCompatActivity
 
     private EditText getEditText(int user_name_editText) {
         return (EditText) findViewById(user_name_editText);
+    }
+
+    private boolean isNetworkConnected(){
+        NetworkInfo activeNetworkInfo = ((ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
