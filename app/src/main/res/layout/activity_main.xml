@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
+        android:id="@+id/title_textView"
         android:text="@string/main_title"
         android:gravity="center_horizontal"
         android:textSize="20sp"
@@ -19,7 +19,7 @@
         android:inputType="textPersonName"
         android:hint="@string/username"
         android:ems="10"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/title_textView"
         style="@style/edit_text"
         />
 

@@ -4,49 +4,56 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.nicoloereni.githubstargazers.api.HttpRequest;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class StargazersActivity extends AppCompatActivity {
+public class StargazersActivity extends AppCompatActivity
+{
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stargazers);
 
         setActionBarTitle();
 
-        String name = getIntent().getStringExtra(GitHubRequest.USERNAME);
-        String repositoryName = getIntent().getStringExtra(GitHubRequest.REPOSITORY_NAME);
-
         final StargazersFactory stargazersFactory =
-                new StargazersFactory(new HttpRequest(GitHubRequest.getRequest(name, repositoryName)));
+                new StargazersFactory(
+                        new HttpRequest(
+                                GitHubRequest.getRequest(getStargazerNameFromIntent(), getStargazerRepoNameFromIntent())
+                        )
+                );
 
-        ListView stargazersListView = (ListView) findViewById(R.id.stargazers_listView);
-
-        AsyncTask asyncTask = new AsyncTask() {
+        AsyncTask asyncTask = new AsyncTask()
+        {
             @Override
             protected ArrayList doInBackground(Object[] params) {
-
-                try {
+                try
+                {
                     //TODO parte lo spinner
                     return stargazersFactory.all();
-                } catch (Exception e) {
-                    //TODO messaggio di errore
-                    return null;
+                } catch (Exception e)
+                {
+                    showOnScreenError();
+                    return new ArrayList();
                 }
-
             }
 
             @Override
-            protected void onPostExecute(Object o) {
+            protected void onPostExecute(Object o)
+            {
                 super.onPostExecute(o);
 
-                if(o != null) {
-                    //TODO popola la lista
-                }
+                getStargazersListView().setAdapter(
+                        new StargazersArrayAdapter(
+                                StargazersActivity.this,
+                                R.layout.stargazers_list_item,
+                                (List<StargazerModel>) o));
 
                 //TODO spengo spinner
 
@@ -57,7 +64,30 @@ public class StargazersActivity extends AppCompatActivity {
 
     }
 
-    private void setActionBarTitle() {
+    private ListView getStargazersListView() {
+        return (ListView) findViewById(R.id.stargazers_listView);
+    }
+
+    private String getStargazerRepoNameFromIntent() {
+        return getIntent().getStringExtra(GitHubRequest.REPOSITORY_NAME);
+    }
+
+    private String getStargazerNameFromIntent() {
+        return getIntent().getStringExtra(GitHubRequest.USERNAME);
+    }
+
+    private void showOnScreenError()
+    {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(StargazersActivity.this, R.string.stargazers_error_message, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void setActionBarTitle()
+    {
         getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
     }
 }

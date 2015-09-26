@@ -32,7 +32,7 @@ public class StargazerModelTest extends AndroidTestCase{
                 StargazerModel stargazeModel = new StargazerModel(new JSONObject(FAKE_STARGAZE));
                 assertNotNull(stargazeModel);
                 assertEquals("mattdsteele", stargazeModel.name);
-                assertEquals("https://avatars.githubusercontent.com/u/389077?v=3", stargazeModel.avatarUrl);
+                assertEquals("https://avatars.githubusercontent.com/u/389077?v=3&s=100", stargazeModel.avatarUrl);
         }
 
 }

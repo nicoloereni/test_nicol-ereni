@@ -10,7 +10,7 @@ public class StargazerModel {
 
     public StargazerModel(JSONObject jsonObject) throws JSONException {
         name = jsonObject.getString("login");
-        avatarUrl = jsonObject.getString("avatar_url");
+        avatarUrl = jsonObject.getString("avatar_url").concat("&s=100");
     }
 
 }
