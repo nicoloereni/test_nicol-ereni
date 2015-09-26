@@ -1,5 +1,6 @@
 package com.nicoloereni.githubstargazers;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-            //commento
+                startActivity(new Intent(MainActivity.this, StargazersActivity.class));
 
             }
         });
