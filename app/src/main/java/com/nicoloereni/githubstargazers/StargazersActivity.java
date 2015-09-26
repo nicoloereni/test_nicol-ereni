@@ -1,9 +1,13 @@
 package com.nicoloereni.githubstargazers;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.ListView;
+
+import com.nicoloereni.githubstargazers.api.HttpRequest;
+
+import java.util.ArrayList;
 
 public class StargazersActivity extends AppCompatActivity {
 
@@ -11,27 +15,49 @@ public class StargazersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stargazers);
+
+        setActionBarTitle();
+
+        String name = getIntent().getStringExtra(GitHubRequest.USERNAME);
+        String repositoryName = getIntent().getStringExtra(GitHubRequest.REPOSITORY_NAME);
+
+        final StargazersFactory stargazersFactory =
+                new StargazersFactory(new HttpRequest(GitHubRequest.getRequest(name, repositoryName)));
+
+        ListView stargazersListView = (ListView) findViewById(R.id.stargazers_listView);
+
+        AsyncTask asyncTask = new AsyncTask() {
+            @Override
+            protected ArrayList doInBackground(Object[] params) {
+
+                try {
+                    //TODO parte lo spinner
+                    return stargazersFactory.all();
+                } catch (Exception e) {
+                    //TODO messaggio di errore
+                    return null;
+                }
+
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+
+                if(o != null) {
+                    //TODO popola la lista
+                }
+
+                //TODO spengo spinner
+
+            }
+        };
+
+        asyncTask.execute();
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_stargazers, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    private void setActionBarTitle() {
+        getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
     }
 }

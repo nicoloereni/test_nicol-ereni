@@ -6,4 +6,7 @@
     <string name="title_activity_stargazers">StargazersActivity</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="username">Username</string>
+    <string name="repository_name">Repository Name</string>
+    <string name="find">Cerca</string>
 </resources>

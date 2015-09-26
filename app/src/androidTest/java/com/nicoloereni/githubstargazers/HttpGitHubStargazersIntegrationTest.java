@@ -19,7 +19,6 @@ public class HttpGitHubStargazersIntegrationTest extends AndroidTestCase
         httpRequest = new HttpRequest("https://api.github.com/repos/xpmatteo/birthday-greetings-kata/stargazers");
     }
 
-
     public void testGetStargazersJsonObjectData() throws JSONException {
         List<JSONObject> stargazersData = httpRequest.all();
         assertNotNull(stargazersData);

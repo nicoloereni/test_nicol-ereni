@@ -17,33 +17,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button findStargazersButton = (Button) findViewById(R.id.find_stargazers_button);
-        EditText usernameEditText = (EditText) findViewById(R.id.user_name_editText);
-        EditText repoEditText = (EditText) findViewById(R.id.repo_name_editText);
+        final EditText usernameEditText = (EditText) findViewById(R.id.user_name_editText);
+        final EditText repositoryNameEditText = (EditText) findViewById(R.id.repo_name_editText);
 
         findStargazersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(MainActivity.this, StargazersActivity.class));
+                Intent intent = new Intent(MainActivity.this, StargazersActivity.class);
+                intent.putExtra(GitHubRequest.USERNAME, usernameEditText.getText()+"");
+                intent.putExtra(GitHubRequest.REPOSITORY_NAME, repositoryNameEditText.getText()+"");
+
+                startActivity(intent);
 
             }
         });
-
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
